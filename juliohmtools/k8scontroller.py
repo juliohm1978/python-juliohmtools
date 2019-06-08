@@ -10,10 +10,8 @@ class Controller():
     '''
     A general purpose controller wrapped around the Kubernetes API.
 
-    This controller will only listen to sepecific type of CRD, given its
-    group, version, plural name and, optionally, a namespace.
-
-    It will not listen to native Kubernetes objects.
+    This controller will only listen to CRDs from the CustomObjectsApi. It will
+    not listen to native Kubernetes objects.
     '''
 
     timeout_seconds = 300
