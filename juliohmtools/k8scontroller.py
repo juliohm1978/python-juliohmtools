@@ -19,8 +19,10 @@ class Controller():
     namespace   = None
     version     = 'v1'
 
-    timeout_seconds = 300
+    timeout_seconds = 0
     reconnect_interval_seconds = 15
+
+    handlers = list()
 
     def set_group(self, group):
         self.group = group
@@ -60,6 +62,9 @@ class Controller():
             Time in seconds to wait before reconnecting. Default: 15
         '''
         self.reconnect_interval_seconds=reconnect_interval_seconds
+
+    def add_handler(self, handler):
+        self.handlers.append(handler)
 
     def watch(self):
         '''
@@ -108,16 +113,7 @@ class Controller():
                         timeout_seconds=self.timeout_seconds
                         )
                 for event in stream:
-                    try:
-                        self.on_event(event, event['object'])
-                    except Exception as err:
-                        obj_name      = event['object']['metadata']['name']
-                        obj_namespace = event['object']['metadata']['namespace']
-                        ev_type       = event['type']
-                        logging.error('Error handling event {:s} for {:s}/{:s}'.format(ev_type, obj_namespace, obj_name))
-                        logging.error('Error: '+str(err))
-                        logging.debug(err, exc_info=True)
-                        time.sleep(self.reconnect_interval_seconds)
+                    self.on_event(event, event['object'])
             except Exception as err:
                 logging.error('Error watching: '+str(err))
                 logging.debug(err, exc_info=True)
@@ -137,7 +133,21 @@ class Controller():
 
     def on_event(self, event, obj):
         '''
-        Default implementation for the CRD event handler. Override this method to implement your logic.
+        Default implementation for the CRD event handler.
         '''
-        logger.info('{:s} {:s} {:s}/{:s} Nothing to do'.format(event['type'], obj['kind'], obj['metadata']['namespace'], obj['metadata']['name']))
+        logger.info('{:s} {:s} {:s}/{:s}'.format(event['type'], obj['kind'], obj['metadata']['namespace'], obj['metadata']['name']))
+        if len(self.handlers) <= 0:
+            logger.info('No handlers defined')
+            return
+        for h in self.handlers:
+            try:
+                h(event, obj)
+            except Exception as err:
+                logging.error('Error handling event {:s} for {:s}/{:s}'.format(
+                    event['type'],
+                    obj['metadata']['namespace'], obj['metadata']['name']
+                ))
+                logging.error('Error: '+str(err))
+                logging.debug(err, exc_info=True)
+                time.sleep(self.reconnect_interval_seconds)
 
