@@ -1,4 +1,4 @@
-# pyjuliohmtools
+# Python juliohmtools
 
 A collection of Python libraries
 
