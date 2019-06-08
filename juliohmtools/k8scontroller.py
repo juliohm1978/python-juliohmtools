@@ -129,7 +129,7 @@ class Controller():
                 logging.debug(err, exc_info=True)
                 time.sleep(self.reconnect_interval_seconds)
  
-    def watchBackground(self):
+    def watch_background(self):
         '''
         Start watch() in a background thread.
 
@@ -141,7 +141,7 @@ class Controller():
         th.start()
         return th
 
-    def onEvent(self, event, obj):
+    def on_event(self, event, obj):
         '''
         Default implementation for the CRD event handler. Override this method to implement your logic.
         '''
