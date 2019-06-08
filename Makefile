@@ -4,8 +4,8 @@ package: clean
 clean:
 	rm -fr build dist *.egg-info
 
-uptest: package
-	python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# uptest: package
+# 	python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-up: package
+install: package
 	python -m twine upload dist/*
