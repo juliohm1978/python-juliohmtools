@@ -14,50 +14,28 @@ class Controller():
     not listen to native Kubernetes objects.
     '''
 
+    group       = None
+    name        = None
+    namespace   = None
+    version     = 'v1'
+
     timeout_seconds = 300
     reconnect_interval_seconds = 15
 
-    stop = False
+    def set_group(self, group):
+        self.group = group
 
-    def __init__(self, group, name, version=None, namespace=None, kubeconfig_file=None):
-        '''
-        Parameters
-        ----------
-        kubeconfig_file:
-            Kubernetes configuration used to access the cluster. If not
-            provided, in-cluster configuration will be loaded.
-        
-        namespace:
-            Restrict the actions of this controller to a specific namespace.
+    def set_name(self, name):
+        self.name = name
 
-        group:
-            Name of the CRD group to watch.
-        
-        version: (optional)
-            Version of the CRD to watch. Default: v1
-
-        name:
-            Name of the object, or its plural name.
-        
-        namespace: (optional)
-            Namespace to watch for resources. If empty, watch for events in
-            all namespaces.
-        '''
-        if kubeconfig_file:
-            logging.info('Using kubeconfig_file='+str(kubeconfig_file))
-            self.kconfig = kubernetes.config.load_kube_config(config_file=kubeconfig_file)
-        elif 'KUBERNETES_SERVICE_HOST' in os.environ:
-            self.kconfig = kubernetes.config.load_incluster_config()
-        else:
-            raise Exception('Unable to load Kubernetes configuration')
-        
-        self.group     = group
-        self.version   = version
-        self.name      = name
+    def set_namespace(self, namespace):
         self.namespace = namespace
 
-        if not self.version:
-            self.version = 'v1'
+    def set_version(self, version):
+        self.version = version
+
+    def set_kubeconfig_file(self, kubeconfig_file):
+        self.kubeconfig_file = kubeconfig_file
 
     def set_api_timeout(self, timeout_seconds):
         '''
@@ -87,10 +65,28 @@ class Controller():
         '''
         Main loop that watches over CRD events.
         '''
+
+        if self.kubeconfig_file:
+            logging.info('Using kubeconfig_file='+str(self.kubeconfig_file))
+            kubernetes.config.load_kube_config(config_file=self.kubeconfig_file)
+        elif 'KUBERNETES_SERVICE_HOST' in os.environ:
+            kubernetes.config.load_incluster_config()
+        else:
+            raise Exception('Unable to load Kubernetes configuration')
+
+        if not self.group:
+            raise Exception('group is a required value')
+
+        if not self.name:
+            raise Exception('name is a required value')
+
+        if not self.version:
+            self.version = 'v1'
+
         crdapi  = kubernetes.client.CustomObjectsApi()
         watch = kubernetes.watch.Watch()
 
-        while not self.stop:
+        while True:
             try:
                 stream = None
                 if self.namespace:
@@ -143,5 +139,5 @@ class Controller():
         '''
         Default implementation for the CRD event handler. Override this method to implement your logic.
         '''
-        logger.info('{:s}: {:s}/{:s} Nothing to do'.format(event['type'], obj['metadata']['namespace'], obj['metadata']['name']))
+        logger.info('{:s} {:s} {:s}/{:s} Nothing to do'.format(event['type'], obj['kind'], obj['metadata']['namespace'], obj['metadata']['name']))
 
