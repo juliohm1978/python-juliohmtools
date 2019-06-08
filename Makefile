@@ -8,7 +8,7 @@ clean:
 # 	python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
 install: package
-	python -m twine upload dist/*
+	python -m twine upload --u juliohm -p $(shell pass pypi-juliohm)  dist/*
 
 localtest:
 	pip install -e .
