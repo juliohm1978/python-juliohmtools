@@ -117,7 +117,13 @@ class Controller():
                     obj_name      = event['object']['metadata']['name']
                     obj_namespace = event['object']['metadata']['namespace']
                     ev_type       = event['type']
-                    onEvent(event, event['object'])
+                    try:
+                        onEvent(event, event['object'])
+                    except Execption as err:
+                        logging.error('Error handling event {:s} for {:s}/{:s}'.format(ev_type, obj_namespace, obj_name))
+                        logging.error('Error: '+str(err))
+                        logging.debug(err, exc_info=True)
+                        time.sleep(self.reconnect_interval_seconds)
             except Exception as err:
                 logging.error('Error watching: '+str(err))
                 logging.debug(err, exc_info=True)
