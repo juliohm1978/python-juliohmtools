@@ -9,3 +9,6 @@ clean:
 
 install: package
 	python -m twine upload dist/*
+
+localtest:
+	pip install -e .

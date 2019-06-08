@@ -61,7 +61,7 @@ class Controller():
         if not self.version:
             self.version = 'v1'
 
-    def set_api_timeout(timeout_seconds):
+    def set_api_timeout(self, timeout_seconds):
         '''
         Timeout waiting for Kubernetes API events. When this time expires, the
         controller will reloop, reconnect to the stream connection and keep
@@ -74,7 +74,7 @@ class Controller():
         '''
         self.timeout_seconds=timeout_seconds
 
-    def set_reconnect_interval(reconnect_interval_seconds):
+    def set_reconnect_interval(self, reconnect_interval_seconds):
         '''
         How long to wait and reconnect to the API server after a timeout.
 
@@ -118,8 +118,8 @@ class Controller():
                     obj_namespace = event['object']['metadata']['namespace']
                     ev_type       = event['type']
                     try:
-                        onEvent(event, event['object'])
-                    except Execption as err:
+                        self.on_event(event, event['object'])
+                    except Exception as err:
                         logging.error('Error handling event {:s} for {:s}/{:s}'.format(ev_type, obj_namespace, obj_name))
                         logging.error('Error: '+str(err))
                         logging.debug(err, exc_info=True)
@@ -145,5 +145,5 @@ class Controller():
         '''
         Default implementation for the CRD event handler. Override this method to implement your logic.
         '''
-        logger.info('{:s}: {:s}/{:s} Nothing to do'.format(ev_type, obj['metadata']['namespace'], obj['metadata']['name']))
+        logger.info('{:s}: {:s}/{:s} Nothing to do'.format(event['type'], obj['metadata']['namespace'], obj['metadata']['name']))
 
