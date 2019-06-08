@@ -114,12 +114,12 @@ class Controller():
                         timeout_seconds=self.timeout_seconds
                         )
                 for event in stream:
-                    obj_name      = event['object']['metadata']['name']
-                    obj_namespace = event['object']['metadata']['namespace']
-                    ev_type       = event['type']
                     try:
                         self.on_event(event, event['object'])
                     except Exception as err:
+                        obj_name      = event['object']['metadata']['name']
+                        obj_namespace = event['object']['metadata']['namespace']
+                        ev_type       = event['type']
                         logging.error('Error handling event {:s} for {:s}/{:s}'.format(ev_type, obj_namespace, obj_name))
                         logging.error('Error: '+str(err))
                         logging.debug(err, exc_info=True)
