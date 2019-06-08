@@ -64,8 +64,8 @@ class Controller():
     def set_api_timeout(self, timeout_seconds):
         '''
         Timeout waiting for Kubernetes API events. When this time expires, the
-        controller will reloop, reconnect to the stream connection and keep
-        watching for events.
+        controller will reloop, reconnect to the stream and keep watching for
+        events.
 
         Parameters
         ----------
