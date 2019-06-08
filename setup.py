@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="juliohmtools",
-    version="0.0.5",
+    version="0.0.6",
     author="Julio H Morimoto",
     author_email="jhm@juliohm.com.br",
     description="A Collection of Python Libraries",
@@ -13,7 +13,7 @@ setuptools.setup(
     For details and documentation, refer to https://github.com/juliohm1978/python-juliohmtools
     ''',
     long_description_content_type="text/markdown",
-    url="https://github.com/juliohm1978/pyjuliohmtools",
+    url="https://github.com/juliohm1978/python-juliohmtools",
     packages=setuptools.find_packages(),
     install_requires=[
           'kubernetes',
