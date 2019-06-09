@@ -46,8 +46,8 @@ class Controller():
         events.
 
         Parameters
-        ----------
-        timeout_seconds:
+        ==========
+        `timeout_seconds`:
             Time in seconds to wait for API events. Default: 300 (5min)
         '''
         self.timeout_seconds=timeout_seconds
@@ -57,8 +57,8 @@ class Controller():
         How long to wait and reconnect to the API server after a timeout.
 
         Parameters
-        ----------
-        reconnect_interval_seconds:
+        ===========
+        `reconnect_interval_seconds`:
             Time in seconds to wait before reconnecting. Default: 15
         '''
         self.reconnect_interval_seconds=reconnect_interval_seconds
@@ -69,17 +69,18 @@ class Controller():
         on the objects that being watched.
 
         Handler signature
-        ------------------
+        =================
+        ```
         def my_handler(event, obj):
             pass
-        
+        ```
         
         Handler parameters
-        ------------------
-        event:
+        ==================
+        `event`:
             Event that was received from the API
         
-        obj:
+        `obj`:
             Object related to the event. This is also contained inside
             the event object, but handed separately here for convenience.
         '''
@@ -143,7 +144,7 @@ class Controller():
         Start watch() in a background thread.
 
         Returns
-        -------
+        =======
         The thread object where the loop is running.
         '''
         th = threading.Thread(target=self.watch)
