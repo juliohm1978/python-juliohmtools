@@ -15,8 +15,10 @@ localtest:
 
 ## install CRDs for testing
 installg:
+	kubectl apply -f test/guitarscrd.yaml
 	kubectl apply -f test/guitars.yaml
 
 ## remove CRDs from testing
 deleteg:
 	kubectl delete -f test/guitars.yaml
+	kubectl delete -f test/guitarscrd.yaml
