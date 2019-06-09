@@ -2,7 +2,7 @@
 
 A Version Control System (VCS) module that can watch a remote repository for changes and notify a list of callback handler functions.
 
-It uses a polling mechanism to request information fromt he remote repository regularly.
+It uses a polling mechanism to request information from the remote repository regularly.
 
 Currently, only Subversion is a supported backend. Planning to add Git in the near future.
 
