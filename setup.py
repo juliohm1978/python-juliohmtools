@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="juliohmtools",
-    version="0.0.14",
+    version="0.1.0",
     author="Julio H Morimoto",
     author_email="jhm@juliohm.com.br",
     description="A Collection of Python Libraries",
