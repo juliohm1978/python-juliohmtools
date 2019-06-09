@@ -23,3 +23,12 @@ class VCSWatchClient(object):
         Password for remote repository authentication
         '''
         self.password = password
+
+    def __str__(self):
+        return 'VCSWatchClient<{:s}>'.format(self.url)
+    
+    def get_last_revision(self):
+        return None
+    
+    def get_hash(self):
+        return None
