@@ -13,6 +13,7 @@ pip install -U juliohmtools
 ## Libraries included
 
 * [k8scontroller - Kubernetes Controller Wrapper](docs/k8scontroller/README.md)
+* [vcswatch - Version Control System watcher](docs/vcswatch/README.md)
 
 ## Local Testing
 
