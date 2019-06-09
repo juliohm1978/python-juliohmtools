@@ -41,6 +41,9 @@ client.set_password('mysecret')
 ## Create a VCSWatch
 w = vcswatch.VCSWatch()
 
+## Only change this if you are unable to read+write to /var/lib/vcswatch.
+## w.set_cachedir('/path/to/another/cache/directory')
+
 ## Define a polling interval. Default: 300 (5min)
 w.set_polling_interval(5)
 
@@ -53,3 +56,9 @@ w.add_handler(myhandler)
 ## Start background thread to watch for changes
 w.watch_background()
 ```
+
+## Directories and Permissions
+
+By default, `VCSWatch` will keep cached information about the remote repository in `/var/lib/vcswatch`. Make sure thie directory exists and is provided with read/write permissions for the user running your python script.
+
+You can change the cache directory using the method `VCSWatch.set_cachedir(string)`.
