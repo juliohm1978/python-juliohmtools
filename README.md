@@ -4,7 +4,7 @@ A collection of Python libraries. Releases are uploaded to <https://pypi.org/pro
 
 ## Installation
 
-Preferrebly, install the library to your user only.
+Preferably, install the library to your user only.
 
 ```bash
 pip install -U juliohmtools
