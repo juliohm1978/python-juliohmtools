@@ -4,7 +4,7 @@ Using the [python kubernetes-client](https://github.com/kubernetes-client/python
 
 ## Examples
 
-The `test` directory provides a couple of files you can use for a quick test:
+The `test/k8scontroller` directory provides a couple of files you can use for a quick test:
 
 * `guitarscrd.yaml`
 * `guitars.yaml`
