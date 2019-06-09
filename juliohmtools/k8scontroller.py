@@ -64,6 +64,25 @@ class Controller():
         self.reconnect_interval_seconds=reconnect_interval_seconds
 
     def add_handler(self, handler):
+        '''
+        Handler functions that will be called when new events are captured
+        on the objects that being watched.
+
+        Handler signature
+        ------------------
+        def my_handler(event, obj):
+            pass
+        
+        
+        Handler parameters
+        ------------------
+        event:
+            Event that was received from the API
+        
+        obj:
+            Object related to the event. This is also contained inside
+            the event object, but handed separately here for convenience.
+        '''
         self.handlers.append(handler)
 
     def watch(self):
