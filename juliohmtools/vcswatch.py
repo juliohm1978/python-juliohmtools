@@ -1,8 +1,8 @@
-import svn
 import logging
 import pathlib
 import time
-from vcswatchclient import VCSWatchClient
+import threading
+from juliohmtools.vcswatchclient import VCSWatchClient
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,7 @@ class VCSWatch():
 
     polling_interval = 300
 
-    def set_url(self, client: VCSWatchClient):
+    def set_client(self, client: VCSWatchClient):
         '''
         Client that will be used to fetch information about the remote repository.
         '''
@@ -75,30 +75,49 @@ class VCSWatch():
         if not self.client:
             raise Exception('There are no clients defined. Use VCSWatch.set_client() to define one.')
 
-        logging.info('Watching remote repository '+client)
+        self.client.init()
+        logging.info('Watching remote repository '+str(self.client))
+        logging.info('Polling interval: '+str(self.polling_interval))
         while True:
             try:
-                clientrev = client.get_last_revision()
-                clienthash = client.get_hash()
+                clientrev = str(self.client.get_lastest_revision())
+                clienthash = self.client.get_hash()
 
                 if not clientrev:
-                    logger.error('Not a valid revision '+client)
+                    logger.error('Not a valid revision '+str(self.client))
 
                 if not clienthash:
-                    logger.error('Not a valid hash '+client)
+                    logger.error('Not a valid hash '+str(self.client))
 
                 local_cache_file = self.cachedir + '/' + clienthash + '.rev'
+                if not pathlib.Path(local_cache_file).exists():
+                    pathlib.Path(local_cache_file).touch()
+
                 localrev = pathlib.Path(local_cache_file).read_text()
                 logging.debug('Old revision acquired from local cache ['+local_cache_file+'] '+localrev)
 
                 if localrev != clientrev:
-                    logging.debug('Revision changed for client '+client)
-                    for h in self.handlers
-                        h(client, localrev, clientrev)
+                    logging.debug('Revision changed for client '+str(self.client))
+                    for h in self.handlers:
+                        h(self.client, localrev, clientrev)
                     pathlib.Path(local_cache_file).write_text(clientrev)
                     logging.debug('New revision written to local cache ['+local_cache_file+'] '+clientrev)
+                else:
+                    logging.debug('Polling complete. No change for '+str(self.client))
             except Exception as err:
-                logging.error('Error watching remote repository: '+err)
+                logging.error('Error watching remote repository: '+str(err))
                 logging.debug(err, exc_info=True)
             finally:
                 time.sleep(self.polling_interval)
+
+    def watch_background(self):
+        '''
+        Start watch() in a background thread.
+
+        Returns
+        =======
+        The thread object where the loop is running.
+        '''
+        th = threading.Thread(target=self.watch)
+        th.start()
+        return th
