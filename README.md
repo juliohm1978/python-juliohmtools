@@ -10,7 +10,7 @@ Preferably, install the library to your user only, or to a Python Environment us
 pip install -U juliohmtools
 ```
 
-## Libraries included
+## Modules included
 
 * [k8scontroller - Kubernetes Controller Wrapper](docs/k8scontroller/README.md)
 * [vcswatch - Version Control System watcher](docs/vcswatch/README.md)
