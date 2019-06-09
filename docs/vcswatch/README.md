@@ -14,7 +14,7 @@ from juliohmtools import vcswatchclient
 import logging
 
 ## Standard python logging. Format messages to your needs.
-## Enable DEBUG level to see full stack traces if you com across any errors.
+## Enable DEBUG level to see full stack traces if you come across any errors.
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s] [%(levelname)-8s] [%(name)s] [%(funcName)s] %(message)s')
 
 ## Handler function that will be notified whenever a change occurs in the remote repo
