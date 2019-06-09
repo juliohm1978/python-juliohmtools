@@ -1,8 +1,7 @@
 from juliohmtools import k8scontroller
 import logging
-import time
 
-logging.basicConfig(level=logging.DEBUG, format='[%(asctime)s] [%(levelname)-8s] [%(name)s] [%(funcName)s] %(message)s')
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] [%(levelname)-8s] [%(name)s] [%(funcName)s] %(message)s')
 
 def handle(event, obj):
     print(event)
