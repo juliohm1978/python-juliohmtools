@@ -1,6 +1,6 @@
 # Python juliohmtools
 
-A collection of Python libraries
+A collection of Python libraries. Releases are uploaded to <https://pypi.org/project/juliohmtools/>, so you can easily use Pip to install the library.
 
 ## Installation
 
