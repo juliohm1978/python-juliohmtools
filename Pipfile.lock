@@ -22,7 +22,7 @@
                 "sha256:aa8b870d0f46965bac2c073a93444636b0e1ca74e9777e34f03dd494b8a59d48"
             ],
             "index": "pypi",
-            "version": "==3.1.1"
+            "version": ">=3.1.2"
         },
         "cachetools": {
             "hashes": [
